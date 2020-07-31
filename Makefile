@@ -1,8 +1,26 @@
+ASM_FILES=$(shell find . -name "*.asm")
+OBJECT_FILES=$(ASM_FILES:%.asm=%.o)
+
+NASM_OPTS=-f elf64 -F dwarf -g
+LD_OPTS=-m elf_x86_64
+
+all: helloworld
 
 
-helloworld: .PHONY
-	rm -f helloworld helloworld.o
-	nasm -f elf64 -F dwarf -g -o helloworld.o helloworld.asm
-	ld -m elf_x86_64 -o helloworld helloworld.o
+%.o: %.asm
+	@echo "Montando arquivo $< -> $@"
+	@nasm $(NASM_OPTS) -o $@ $<
 
-.PHONY:
+clean:
+	@echo "Limpando projeto"
+	@rm -f helloworld *.o
+
+link: $(OBJECT_FILES)
+	@echo "Ligando objetos $(OBJECT_FILES)"
+	@ld $(LD_OPTS) -o helloworld $(OBJECT_FILES)
+
+
+helloworld: link
+	@echo "YEY!"
+
+.PHONY: clean
