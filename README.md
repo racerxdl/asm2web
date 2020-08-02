@@ -10,4 +10,5 @@ Lista de instruções e explicações x86-64: [http://faydoc.tripod.com/cpu/](ht
 # Videos das Livestreams
 
 * [ASM4NOOBS - Parte 1](https://www.youtube.com/watch?v=3jrftX-GHgU) - Explicações sobre registradores e formatos de dados
-* ASM4NOOBS - Parte 2 (TODO)
+* [ASM4NOOBS - Parte 2](https://www.youtube.com/watch?v=TVaTpjODUpo) - Codando Hello World
+
