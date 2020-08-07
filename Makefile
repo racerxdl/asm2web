@@ -2,8 +2,8 @@ ASM_FILES=$(shell find . -name "*.asm")
 OBJECT_FILES=$(ASM_FILES:%.asm=%.o)
 
 NASM_OPTS=-f elf64 -F dwarf -g
-LD_OPTS=-m elf_x86_64
-
+#LD_OPTS=-m elf_x86_64
+LD_OPTS=-no-pie
 all: helloworld
 
 
@@ -17,7 +17,7 @@ clean:
 
 link: $(OBJECT_FILES)
 	@echo "Ligando objetos $(OBJECT_FILES)"
-	@ld $(LD_OPTS) -o helloworld $(OBJECT_FILES)
+	@gcc $(LD_OPTS) -o helloworld $(OBJECT_FILES)
 
 
 helloworld: link

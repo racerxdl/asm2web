@@ -1,15 +1,28 @@
 section .text
 
+; Importados do strings.asm
+extern modo_leitura
 extern linebreak
 
+; Importados da libc e ligados como GCC
+extern printf
+extern free
+extern malloc
+extern fopen
+extern fread
+
 ; Lista de syscalls do linux https://filippo.io/linux-syscall-table/
+
+SYSCALL_WRITE equ 1
+SYSCALL_EXIT  equ 60
+STDOUT equ 1
 
 global exit
 exit:
 	; Sai do programa
 	; Chama syscall exit
-        mov rax, 60
-        mov rdi, 0
+        mov rax, SYSCALL_EXIT
+        mov rdi, 0		; Exit Code = 0, success
         syscall
 
 global print
@@ -20,10 +33,10 @@ print:
         push rsi
         call strlen     ; Tamanho da string em RAX
         pop rsi
-                        ; Chamar syscall write em stdout
-        mov rdi, 1      ; File Description = STDOUT
-        mov rdx, rax    ; Tamanho da string
-        mov rax, 1      ; Syscall Write
+                        	; Chamar syscall write em stdout
+        mov rdi, STDOUT 	; File Description = STDOUT
+        mov rdx, rax    	; Tamanho da string
+        mov rax, SYSCALL_WRITE  ; Syscall Write
         syscall
         pop rax
         ret
@@ -38,6 +51,16 @@ println:
         call print              ; Imprime Quebra de Linha
         pop rsi
         ret
+
+global eprintf
+eprintf:
+	; Imprime uma string em STDOUT usando printf da libc
+
+        push rbp
+        mov rbp, rsp
+        call printf
+        pop rbp
+	ret	
 
 global strlen
 strlen:
@@ -57,4 +80,56 @@ loopout:
         mov rax, rbx
         pop rbx         ; Restaura valor original de RBX da Stack
         ret
+
+global allocate
+allocate:
+	;	Aloca uma porção de memória de RDI bytes
+	;	usando a função malloc da libc
+	;	Endereço de memória retornado em RAX
+        push rbp
+        mov rbp, rsp
+        mov rax, 0
+        call malloc
+        pop rbp
+	ret
+
+global deallocate
+deallocate:
+	;	Desaloca uma porção de memória no endereço RDI
+	;	alocada com a função allocate usando a função
+	;	free da libc
+	;	Nenhum retorno
+        push rbp
+        mov rbp, rsp
+        call free
+        pop rbp
+	ret
+
+global abrirarquivo
+abrirarquivo:
+	;	Abre um arquivo usando função fopen da libc
+	;	Nome do arquivo em rdi
+	;	Sempre somente-leitura
+	;	Retorna "handler" do arquivo em RAX
+	push rbp
+	mov rbp, rsp
+	mov rsi, modo_leitura	
+	call fopen
+	pop rbp
+	ret
+
+global lerdados
+lerdados:
+	;	Le dados de um arquivo aberto com abrirarquivo
+	;	Posicao de memoria de leitura em RDI
+	;	Tamanho em RSI (numero de bytes)
+	;	"Handler" do arquivo em RDX
+	;	Retorna numero de bytes lidos em RAX
+	push rbp
+	mov rbp, rsp
+	mov rcx, rdx
+	mov rdx, 1	; Um elemento de RCX bytes
+	call fread
+	pop rbp
+	ret
 
