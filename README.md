@@ -21,4 +21,4 @@ Convenção de chamada x86-64: [https://courses.cs.washington.edu/courses/cse378
 
 * [ASM4NOOBS - Parte 1](https://www.youtube.com/watch?v=3jrftX-GHgU) - Explicações sobre registradores e formatos de dados
 * [ASM4NOOBS - Parte 2](https://www.youtube.com/watch?v=TVaTpjODUpo) - Codando Hello World
-
+* [ASM4NOOBS - Parte 3](https://www.youtube.com/watch?v=Qp0z8glw16c) - Usando a libc no assebmly
