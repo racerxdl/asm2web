@@ -9,6 +9,8 @@ Lista de instruções e explicações x86-64: [http://faydoc.tripod.com/cpu/](ht
 Convenção de chamada x86-64: [https://courses.cs.washington.edu/courses/cse378/10au/sections/Section1_recap.pdf](https://courses.cs.washington.edu/courses/cse378/10au/sections/Section1_recap.pdf)
 
 
+Tipos de dados no assembly: [https://www.tutorialspoint.com/assembly_programming/assembly_variables.htm](https://www.tutorialspoint.com/assembly_programming/assembly_variables.htm)
+
 # Funções da libc
 
 * **fread** [https://man7.org/linux/man-pages/man3/fread.3.html](https://man7.org/linux/man-pages/man3/fread.3.html)

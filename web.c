@@ -47,6 +47,8 @@ int main(int argc, char const *argv[]) {
     int server_fd, new_socket;
     int opt = 1;
 
+    printf("ADDRLEN: %d\n", addrlen);
+
     // Creating socket file descriptor
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
         perror("socket failed");
@@ -59,9 +61,13 @@ int main(int argc, char const *argv[]) {
         exit(EXIT_FAILURE);
     }
 
+    printf("SOCKANDO: %d %d\n", SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT);
+
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons( 8081 );
+
+    printf("PORTA INVERSA: %d\n", address.sin_port);
 
     // Forcefully attaching socket to the port 8081
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address))<0) {

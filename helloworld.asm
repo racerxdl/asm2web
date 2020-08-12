@@ -24,6 +24,14 @@ extern exit
 extern abrirarquivo
 extern lerdados
 
+; Importado do sockets.asm
+extern criarsocket
+extern sockarserver
+extern htons
+extern bindar
+extern escutar
+extern peraeconexao
+
 endereco:
 	db `Endereco do malloc eh %p\n`, 0
 
@@ -108,6 +116,21 @@ main:
 	mov rdx, 0
 	mov eax, 0
 	call eprintf
+
+	; Criar server socket
+	call criarsocket
+
+	; Sockar forçadamente a porta e o endereço (setsockopt)
+	call sockarserver
+
+	; Bindar a porta
+	call bindar
+
+	; Escutar na porta
+	call escutar
+
+	; Esperar conexao
+	call peraeconexao
 
 	; Sai do programa
 	call exit

@@ -17,6 +17,12 @@ SYSCALL_WRITE equ 1
 SYSCALL_EXIT  equ 60
 STDOUT equ 1
 
+global alo_kernel
+alo_kernel:
+	; Uma zoeira pra chamar syscall. totalmente desnecessário, inútil e lerdo
+	syscall
+	ret
+
 global exit
 exit:
 	; Sai do programa
