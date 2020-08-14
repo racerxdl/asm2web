@@ -26,15 +26,17 @@ SOL_SOCKET equ 1
 SO_REUSEADDR equ 2
 SO_REUSEPORT equ 15
 
+SYSCALL_CLOSE		equ  3
 SYSCALL_SOCKET		equ 41
 SYSCALL_ACCEPT		equ 43
+SYSCALL_SHUTDOWN	equ 48
 SYSCALL_BIND   		equ 49
 SYSCALL_LISTEN		equ 50
 SYSCALL_SETSOCKOPT	equ 54
 SYSCALL_EXIT		equ 60
 
 
-PORTA equ 8081
+PORTA equ 8094
 
 struc sockaddr_in
         sin_family resb 2
@@ -57,10 +59,11 @@ addrlen:
 
 global serverfd
 serverfd:
-	dd 0
+	dq 0
+
 global optseilaoq
 optseilaoq:
-	dd 0
+	dd 1
 
 global optseilaoqlen
 optseilaoqlen:
@@ -68,7 +71,7 @@ optseilaoqlen:
 
 global clientfd
 clientfd:
-	dd 0
+	dq 0
 
 ; CODIGOS
 section .text
@@ -77,23 +80,24 @@ global peraeconexao
 peraeconexao:
 	mov rdi, [serverfd]
 	mov rsi, address
-	mov rdx, [addrlen]
+	mov rdx, addrlen
 	mov rax, SYSCALL_ACCEPT
 	call alo_kernel
-	mov [clientfd], eax
+	mov [clientfd], rax
 	test rax, rax
-	jnl peraeconexao_deuruim
+	jl peraeconexao_deuruim
         ; jmp peraeconexao_deubom        ; Desnecessario pois peraeconexao_deubom
         ; vem logo em seguida
 
 peraeconexao_deubom:
         ; Retorna pra quem chamou
         mov rdi, peraeconexao_deu_bom
-        mov rsi, 0
+        mov rsi, [clientfd]
         mov rdx, 0
         mov eax, 0
         call eprintf
         ret
+
 peraeconexao_deuruim:
         ; :(
         mov rdi, peraeconexao_deu_ruim
@@ -151,7 +155,7 @@ sockarserver:
 	mov rdi, [serverfd]
 	mov rsi, SOL_SOCKET
 	mov rdx, SO_REUSEADDR
-	or rdx, SO_REUSEPORT
+        ;or rdx, SO_REUSEPORT
 	mov r10, optseilaoq
 	mov r8, [optseilaoqlen]
 	mov rax, SYSCALL_SETSOCKOPT
@@ -257,4 +261,30 @@ escutar_deuruim:
         mov rax, SYSCALL_EXIT
         mov rdi, 9999
         call alo_kernel
+
+global fechacarai
+fechacarai:
+	; Shutdown cliente	
+	mov rdi, [clientfd]
+	mov rsi, 0
+	mov rax, SYSCALL_SHUTDOWN
+	call alo_kernel
+
+	; Fecha conexao com cliente
+	mov rdi, [clientfd]
+	mov rax, SYSCALL_CLOSE
+	call alo_kernel
+
+	; Shutdown server
+	mov rdi, [serverfd]
+	mov rsi, 0
+	mov rax, SYSCALL_SHUTDOWN
+	call alo_kernel
+
+	; Fecha conexao com servidor
+	mov rdi, [serverfd]
+	mov rax, SYSCALL_CLOSE
+	call alo_kernel
+
+	ret
 

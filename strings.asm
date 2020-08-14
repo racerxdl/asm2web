@@ -39,6 +39,22 @@ global modo_leitura
 modo_leitura:
 	db `r`, 0
 
+global lendorequest
+lendorequest:
+	db `Estou lendo request\n`, 0
+
+global recebinbytes
+recebinbytes:
+	db `Eu recebi %d bytes\n`, 0
+
+global enviandoheader
+enviandoheader:
+	db `Enviando header\n`, 0
+
+global enviandoconteudo
+enviandoconteudo:
+	db `Enviando conteudo\n`,0
+
 
 global socket_deu_ruim
 socket_deu_ruim:
@@ -75,9 +91,25 @@ escutar_deu_ruim:
 
 global peraeconexao_deu_bom
 peraeconexao_deu_bom:
-	db `AE, ALGUEM TA AQUI.\n`, 0
+	db `AE, ALGUEM TA AQUI. %d\n`, 0
 
 global peraeconexao_deu_ruim
 peraeconexao_deu_ruim:
 	db `VISH\n`, 0
+
+
+
+global httpstatusheader
+httpstatusheader:
+	db `HTTP/1.1 %d\r\n`, 0
+
+global htmlcontent
+htmlcontent:
+	db `Content-Type: text/html\r\n`, 0
+
+global linhavazia
+linhavazia:
+	db `\r\n`, 0
+
+
 

@@ -10,12 +10,20 @@ extern free
 extern malloc
 extern fopen
 extern fread
+extern sprintf
 
 ; Lista de syscalls do linux https://filippo.io/linux-syscall-table/
 
 SYSCALL_WRITE equ 1
 SYSCALL_EXIT  equ 60
 STDOUT equ 1
+
+global formatastring
+formatastring:
+	; Recebe destino em RDI
+	; Recebe formato em RSI
+	; Recebe argumentos em RDX, RCX, R8, R9
+	call sprintf
 
 global alo_kernel
 alo_kernel:

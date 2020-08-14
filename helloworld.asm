@@ -14,6 +14,7 @@ extern minhas_frases
 extern formathell
 extern indexhtml
 extern lendoarquivo
+extern httpstatusheader
 
 ; Importado do functions.asm
 extern eprintf
@@ -23,6 +24,8 @@ extern println
 extern exit
 extern abrirarquivo
 extern lerdados
+extern formatastring
+extern strlen
 
 ; Importado do sockets.asm
 extern criarsocket
@@ -31,6 +34,10 @@ extern htons
 extern bindar
 extern escutar
 extern peraeconexao
+extern fechacarai
+
+; Importado do web.asm
+extern passa_o_html_ae
 
 endereco:
 	db `Endereco do malloc eh %p\n`, 0
@@ -108,7 +115,12 @@ main:
 	mov rdi, [tmpend]
 	mov rsi, 1023
 	mov rdx, [arquivoaberto]
-	call lerdados			
+	call lerdados
+
+        mov rsi, [tmpend]
+        call strlen
+
+	mov [tmpendlen], rax
 
 	; Imprime dados lidos
 	mov rdi, [tmpend]
@@ -132,6 +144,14 @@ main:
 	; Esperar conexao
 	call peraeconexao
 
+	; Envia o HTML
+	mov rdi, [tmpend]
+	mov rsi, [tmpendlen]
+	call passa_o_html_ae
+
+	; Fecha os sockets	
+	call fechacarai
+
 	; Sai do programa
 	call exit
 
@@ -143,5 +163,7 @@ main:
 section .data
 tmpend:
         dq 0
+tmpendlen:
+	dq 0
 arquivoaberto:
 	dq 0
