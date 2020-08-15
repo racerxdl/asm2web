@@ -25,4 +25,4 @@ Tipos de dados no assembly: [https://www.tutorialspoint.com/assembly_programming
 * [ASM4NOOBS - Parte 2](https://www.youtube.com/watch?v=TVaTpjODUpo) - Codando Hello World
 * [ASM4NOOBS - Parte 3](https://www.youtube.com/watch?v=Qp0z8glw16c) - Usando a libc no assebmly
 * [ASM4NOOBS - Parte 4](https://www.youtube.com/watch?v=0jw7L7CC84s) - Aceitando uma conexão na porta 8081!
-* [ASM4NOOBS - Parte 5] - O SERVIDOR FUNCIONA!
+* [ASM4NOOBS - Parte 5](https://www.youtube.com/watch?v=mbT5RaI6pdw) - O SERVIDOR FUNCIONA!
